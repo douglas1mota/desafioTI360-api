@@ -2,6 +2,9 @@ package com.V1desafio.API.controllers;
 
 import com.V1desafio.API.models.CursoModel;
 import com.V1desafio.API.services.CursoService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +13,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/cursos")
+@Tag(name = "API Escola - módulo Cursos")
+@CrossOrigin(origins="*")
 public class CursoController {
     @Autowired
     private CursoService service;
 
 
     @PostMapping("/novoCurso")
+    @Operation(summary = "Cadastra um novo curso")
     public ResponseEntity cadastrarCurso(@RequestBody CursoModel curso) {
         service.cadastrarCurso(curso);
         return new ResponseEntity(curso, HttpStatus.OK);
