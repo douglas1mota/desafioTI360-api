@@ -6,15 +6,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_CURSO")
-public class CursoModel {
+@Table(name = "TB_MATRICULA")
+public class MatriculaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_CURSO")
     @Schema(hidden = true)
-    private Integer idCurso;
-    @JoinColumn(name = "NOME_CURSO", table = "TB_MATRICULA")
-    private String nomeCurso;
-
-
+    @Column(name = "ID_MATRICULA")
+    private Integer idMat;
+    @ManyToOne
+    public AlunoModel alunoMat;
+    @ManyToOne
+    public CursoModel cursoMat;
 }

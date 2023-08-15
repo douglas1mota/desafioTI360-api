@@ -3,12 +3,13 @@ package com.V1desafio.API.controllers;
 import com.V1desafio.API.models.AlunoModel;
 import com.V1desafio.API.services.AlunoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,47 +20,60 @@ public class AlunoController {
     @Autowired
     private AlunoService service;
 
-
     @PostMapping("/novoAluno")
     @Operation(summary = "Cadastra um novo aluno")
-    public ResponseEntity cadastrarAluno(@RequestBody AlunoModel aluno) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Requisição enviado com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Aluno cadastrado com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
+    public void cadastrarAluno(@RequestBody AlunoModel aluno) {
         service.cadastrarAluno(aluno);
-        return new ResponseEntity(aluno, HttpStatus.OK);
     }
     @GetMapping(value = "")
     @Operation(summary = "Lista todos os alunos cadastrados")
-    public ResponseEntity<List<AlunoModel>> listarAlunos() {
-        return new ResponseEntity(service.listarAlunos(), HttpStatus.OK);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Registro(s) encontrado(s)"),
+            @ApiResponse(responseCode = "404", description = "Registro(s) não encontrado(s)"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
+    public List<AlunoModel> listarAlunos() {
+        return new ArrayList<>(service.listarAlunos());
     }
-
-    @GetMapping(value = "/{matricula}")
-    @Operation(summary = "Exibe um único aluno através do número da matrícula")
-    public ResponseEntity<AlunoModel> buscarAluno(@PathVariable Integer matricula) {
-
-        return new ResponseEntity(service.buscarAluno(matricula), HttpStatus.OK);
+    @GetMapping(value = "/{idAluno}")
+    @Operation(summary = "Exibe um único aluno através do número do idAluno")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Registro encontrado"),
+            @ApiResponse(responseCode = "404", description = "Registro não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
+    public AlunoModel buscarAluno(@PathVariable Integer idAluno) {
+        return service.buscarAluno(idAluno);
     }
-
-    @PutMapping(value = "/{matricula}")
+    @PutMapping(value = "/{idAluno}")
     @Operation(summary = "Edita todos os dados de um aluno cadastrado")
-    public ResponseEntity<Void> atualizarAluno(@PathVariable Integer matricula, @RequestBody AlunoModel updtAluno) {
-        AlunoModel newAluno = service.atualizarAluno(matricula, updtAluno);
-        return new ResponseEntity(newAluno, HttpStatus.OK);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Requisição enviada com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Cadastro de aluno atualizado com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
+    public void atualizarAluno(@PathVariable Integer idAluno, @RequestBody AlunoModel updtAluno) {
+        service.atualizarAluno(idAluno, updtAluno);
     }
-
-    @PatchMapping(value = "/{matricula}")
+    @PatchMapping(value = "/{idAluno}")
     @Operation(summary = "Edita alguns dados de um aluno cadastrado")
-    public ResponseEntity<Void> corrigirCadastro(@PathVariable Integer matricula, @RequestBody AlunoModel correctAluno) {
-        AlunoModel newAluno = service.corrigirCadastro(matricula, correctAluno);
-        return new ResponseEntity(newAluno, HttpStatus.OK);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Requisição enviada com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Campo(s) atualizado(s) com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
+    public void corrigirCadastro(@PathVariable Integer idAluno, @RequestBody AlunoModel correctAluno) {
+        service.corrigirCadastro(idAluno, correctAluno);
     }
-
-    @DeleteMapping(value = "/{matricula}")
+    @DeleteMapping(value = "/{idAluno}")
     @Operation(summary = "Apaga um registro de um aluno cadastrado")
-    public ResponseEntity<Void> apagarAluno(@PathVariable Integer matricula) {
-        if (service.apagarAluno(matricula)) {
-            return new ResponseEntity("Registro apagado com sucesso", HttpStatus.OK);
-        } return new ResponseEntity("Registro não encontrado", HttpStatus.NOT_FOUND);
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Requisição enviada com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Registro apagado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Registro não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
+    public void apagarAluno(@PathVariable Integer idAluno) {
+        service.apagarAluno(idAluno);
     }
 
 }

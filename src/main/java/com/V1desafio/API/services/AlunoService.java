@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AlunoService {
@@ -20,8 +20,7 @@ public class AlunoService {
     }
 
     public List<AlunoModel> listarAlunos() {
-        List<AlunoModel> lista = alunoRepository.findAll();
-        return lista;
+        return new ArrayList<>(alunoRepository.findAll());
     }
 
     public AlunoModel buscarAluno(Integer matricula) {
