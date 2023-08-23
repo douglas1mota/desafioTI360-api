@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,14 @@ public class AlunoController {
             @ApiResponse(responseCode = "201", description = "Aluno cadastrado com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
     public void cadastrarAluno(@RequestBody AlunoModel aluno) {
-        service.cadastrarAluno(aluno);
+        String cep = aluno.getCep();
+        RestTemplate restTemplate = new RestTemplate();
+        AlunoModel tres = restTemplate.getForObject(String.format("https://viacep.com.br/ws/%s/json", cep)
+                , AlunoModel.class);
+        tres.setNomeAluno(aluno.getNomeAluno());
+        tres.setEmailAluno(aluno.getEmailAluno());
+        tres.setIdadeAluno(aluno.getIdadeAluno());
+        service.cadastrarAluno(tres);
     }
     @GetMapping(value = "")
     @Operation(summary = "Lista todos os alunos cadastrados")
@@ -73,7 +81,8 @@ public class AlunoController {
             @ApiResponse(responseCode = "404", description = "Registro não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
     public void apagarAluno(@PathVariable Integer idAluno) {
-        service.apagarAluno(idAluno);
+        AlunoModel codigo = null;
+        service.apagarAluno(idAluno, codigo);
     }
 
 }

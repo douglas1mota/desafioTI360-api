@@ -1,6 +1,5 @@
 package com.V1desafio.API.controllers;
 
-import com.V1desafio.API.models.AlunoModel;
 import com.V1desafio.API.models.MatriculaModel;
 import com.V1desafio.API.models.MatriculaRequestDTO;
 import com.V1desafio.API.repositories.criteria.params.TurmaFilterParam;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.ArrayList;
 import java.util.List;

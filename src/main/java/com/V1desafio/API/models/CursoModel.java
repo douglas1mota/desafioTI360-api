@@ -10,11 +10,10 @@ import lombok.Data;
 public class CursoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_CURSO")
     @Schema(hidden = true)
+    @Column(name = "ID_CURSO")
     private Integer idCurso;
-    @JoinColumn(name = "NOME_CURSO", table = "TB_MATRICULA")
+    @Column(name = "NOME_CURSO")
     private String nomeCurso;
-
 
 }

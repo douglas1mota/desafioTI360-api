@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,17 +39,16 @@ public class MatriculaService {
         CursoModel curso = cursoRepository.findById(matriculaDTO.getCursoMatId())
                 .orElseThrow(() -> new NotFoundException("Curso não encontrado"));
 
-        MatriculaModel matricula = new MatriculaModel();
+        MatriculaModel matricula = new MatriculaModel(aluno, curso);
         matricula.setAlunoMat(aluno);
         matricula.setCursoMat(curso);
         matriculaRepository.save(matricula);
     }
 
-    public boolean apagarMatricula(Integer idMat) {
+    public void apagarMatricula(Integer idMat) {
         if (matriculaRepository.existsById(Long.valueOf(idMat))) {
             matriculaRepository.deleteById(Long.valueOf(idMat));
-            return true;
-        } return false;
+        }
     }
 
     public List<MatriculaModel> filtrar(TurmaFilterParam params) {

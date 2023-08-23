@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class TurmaRepositoryCustomImpl implements TurmaRepositoryCustom {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public TurmaRepositoryCustomImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
