@@ -33,7 +33,7 @@ public class CursoService {
         CursoRepository.save(newCurso);
     }
 
-    public void corrigirCadastro(Integer idCurso, CursoModel correctCurso) {
+    /*public void corrigirCadastro(Integer idCurso, CursoModel correctCurso) {
         CursoModel newCurso = CursoRepository.getReferenceById(idCurso);
 
         if (correctCurso.getNomeCurso() != null && !correctCurso.getNomeCurso().equals(newCurso.getNomeCurso())) {
@@ -41,7 +41,7 @@ public class CursoService {
         }
 
         CursoRepository.save(newCurso);
-    }
+    }*/
     public void apagarCurso(Integer idCurso) {
         if (CursoRepository.existsById(idCurso)) {
             CursoRepository.deleteById(idCurso);

@@ -57,7 +57,7 @@ public class CursoController {
     public void atualizarCurso(@PathVariable Integer idCurso, @RequestBody CursoModel updtCurso) {
         service.atualizarCurso(idCurso, updtCurso);
     }
-    @PatchMapping(value = "/{idCurso}")
+   /* @PatchMapping(value = "/{idCurso}")
     @Operation(summary = "Edita alguns dados de um curso cadastrado")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Requisição enviada com sucesso"),
@@ -65,7 +65,7 @@ public class CursoController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")    })
     public void corrigirCadastro(@PathVariable Integer idCurso, @RequestBody CursoModel correctCurso) {
         service.corrigirCadastro(idCurso, correctCurso);
-    }
+    }*/
     @DeleteMapping(value = "/{idCurso}")
     @Operation(summary = "Apaga um registro de um curso cadastrado")
     @ApiResponses(value = {

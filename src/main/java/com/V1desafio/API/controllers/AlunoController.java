@@ -36,7 +36,7 @@ public class AlunoController {
         tres.setEmailAluno(aluno.getEmailAluno());
         tres.setIdadeAluno(aluno.getIdadeAluno());
         service.cadastrarAluno(tres);
-    }
+    }   
     @GetMapping(value = "")
     @Operation(summary = "Lista todos os alunos cadastrados")
     @ApiResponses(value = {

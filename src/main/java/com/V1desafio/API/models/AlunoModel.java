@@ -9,7 +9,7 @@ import lombok.Data;
 @Table(name = "TB_ALUNO")
 public class AlunoModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ALUNO")
     @Schema(hidden = true)
     private Integer idAluno;

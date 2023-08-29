@@ -1,8 +1,10 @@
 package com.V1desafio.API.repositories.criteria.impl;
 
+import com.V1desafio.API.models.AlunoModel;
 import com.V1desafio.API.models.CursoModel;
 import com.V1desafio.API.models.MatriculaModel;
 import com.V1desafio.API.repositories.criteria.TurmaRepositoryCustom;
+import com.V1desafio.API.repositories.criteria.params.MatriculaFilterParam;
 import com.V1desafio.API.repositories.criteria.params.TurmaFilterParam;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -21,7 +23,7 @@ public class TurmaRepositoryCustomImpl implements TurmaRepositoryCustom {
     }
 
     @Override
-    public List<MatriculaModel> getFiltro(TurmaFilterParam params) {
+    public List<MatriculaModel> getFiltroCurso(TurmaFilterParam params) {
         CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<MatriculaModel> query = criteriaBuilder.createQuery(MatriculaModel.class);
         Root<MatriculaModel> matricula = query.from(MatriculaModel.class);
@@ -29,6 +31,25 @@ public class TurmaRepositoryCustomImpl implements TurmaRepositoryCustom {
         if (params.getCursoMat() != null) {
             Join<MatriculaModel, CursoModel> cursoJoin = matricula.join("cursoMat");
             predicates.add(criteriaBuilder.equal(cursoJoin.get("id"), params.getCursoMat()));
+        }
+
+        if (!predicates.isEmpty()) {
+            query.where(predicates.toArray(Predicate[]::new));
+        }
+
+        TypedQuery<MatriculaModel> queryResult = this.entityManager.createQuery(query);
+        return queryResult.getResultList();
+    }
+
+    @Override
+    public List<MatriculaModel> getFiltroMatriculas(MatriculaFilterParam params) {
+        CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<MatriculaModel> query = criteriaBuilder.createQuery(MatriculaModel.class);
+        Root<MatriculaModel> matricula = query.from(MatriculaModel.class);
+        List<Predicate> predicates = new ArrayList<>();
+        if (params.getAlunoMat() != null) {
+            Join<MatriculaModel, AlunoModel> alunoJoin = matricula.join("alunoMat");
+            predicates.add(criteriaBuilder.equal(alunoJoin.get("id"), params.getAlunoMat()));
         }
 
         if (!predicates.isEmpty()) {
