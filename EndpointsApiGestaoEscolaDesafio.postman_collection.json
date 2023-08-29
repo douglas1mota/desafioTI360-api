@@ -1,0 +1,802 @@
+{
+	"info": {
+		"_postman_id": "1159bde4-407b-44bf-8ef0-150d3b319389",
+		"name": "EndpointsApiGestaoEscolaDesafio",
+		"description": "Bem vindo ao **Sistema Gestão Escola Desafio**. Esta ferramenta permite o cadastro de cursos e alunos, bem como a consulta, a edição e a deleção de ambos. Além disso, é possível vincular alunos à um curso, formando uma turma, através da matrícula.\n\n**Como usar:** Crie um ou mais alunos. Depois crie um ou mais cursos. Você fará a vinculação de um aluno com um curso através de uma Matrícula, ou seja, caso tente realizar uma matrícula sem um aluno ou sem um curso previamente cadastrados, retornará um erro.\n\n**Banco de dados:** Esta API está atualmente configurada para o banco de dados Postgres de nome db_TI360. Contêm as dependências Postgres no arquivo pom.xml. Contém o endereçamento (datasource) postgres com username postgres e password 123456 no arquivo application.yml. Você pode usar H2 como banco de dados local.\n\nNa guia Coleções (Collections) você encontrará a árvore com as seguintes ramificações:\n\n_**1 - os endpoints de Alunos**_\n\n- 1.1 Cadastrar aluno;\n- 1.2 Consultar todos os alunos cadastrados;\n- 1.3 Consultar aluno por número de cadastro;\n- 1.4 Atualizar todos os campos de um cadastro de aluno;\n- 1.5 Atualizar um campo específico de um cadastro de aluno;\n- 1.6 Apagar cadastro de aluno;\n    \n\n_**2 - os endpoints de Cursos**_\n\n- 2.1 Cadastrar curso;\n- 2.2 Consultar todos os cursos cadastrados;\n- 2.3 Consultar curso por número de cadastro;\n- 2.4 Atualizar todos os campos de um cadastro de curso;\n- 2.5 Atualizar um campo específico de um cadastro de curso;\n- 2.6 Apagar cadastro de curso;\n    \n\n_**3 - os endpoints de Matriculas**_\n\n- 3.1 Realizar matrícula;\n- 3.2 Consultar todas as matrículas realizadas;\n- 3.3 Apagar matrícula;\n- 3.4 Consultar alunos matriculados em um curso;\n- 3.5 Consultar os cursos em que um aluno foi matriculado;\n    \n\n**NOTA:** na deleção de um aluno ou curso, todas as matrículas relacionadas são apagadas.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26449593",
+		"_collection_link": "https://www.postman.com/warped-meteor-900201/workspace/escola-desafio/collection/26449593-1159bde4-407b-44bf-8ef0-150d3b319389?action=share&source=collection_link&creator=26449593"
+	},
+	"item": [
+		{
+			"name": "Alunos",
+			"item": [
+				{
+					"name": "Cadastrar Aluno",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nomeAluno\": \"Fernanda Kipper\",\r\n  \"idadeAluno\": 42,\r\n  \"emailAluno\": \"fernadnadev@example.com\",\r\n  \"cep\": 81750370\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/alunos/novoAluno",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"novoAluno"
+							]
+						},
+						"description": "Cadastra novo aluno: informe nome completo, idade (apenas algarismos arábicos), email no formato correto \"[nome@dominio.extens](https://mailto:nome@dominio.extens)ão\" e o CEP;"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Alunos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response is an array with at least one element\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').and.to.have.lengthOf.at.least(1);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email format is valid\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"\r",
+									"    responseData.forEach(function (aluno) {\r",
+									"        pm.expect(aluno.emailAluno).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is not valid\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"cep is a valid postal code format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"\r",
+									"    responseData.forEach(function (aluno) {\r",
+									"        pm.expect(aluno.cep).to.match(/^\\d{5}-\\d{3}$/, \"cep should be in the format '12345-678'\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/alunos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos"
+							]
+						},
+						"description": "Retorna uma lista completa de todos os alunos cadastrados;"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Aluno",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nomeAluno\": \"novoValor\",\r\n  \"idadeAluno\": \"novaIdadeEmAlgarismosSemAspas\",\r\n  \"emailAluno\": \"novoEmail@example.com\",\r\n  \"cep\": \"novoCEPemAlgarismosSemAspas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/alunos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"1"
+							]
+						},
+						"description": "Atualiza um cadastro de aluno já existente: informe o número do cadastro a ser alterado e os novos valores de todos os campos;"
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Aluno",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/alunos/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"2"
+							]
+						},
+						"description": "Apaga um cadastro de aluno: informe o número do cadastro a ser apagado na URL;"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Aluno Específico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"nomeAluno is a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.nomeAluno).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"idadeAluno is a non-negative integer\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.idadeAluno).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.idadeAluno).to.be.at.least(0, \"idadeAluno should be a non-negative integer\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"EmailAluno is in a valid email format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\r",
+									"\r",
+									"    pm.expect(responseData.emailAluno).to.match(emailRegex, \"EmailAluno should be in a valid email format\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/alunos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"1"
+							]
+						},
+						"description": "Retorna o registro de um aluno através do seu número de cadastro: informe o número ao final da URL, substituindo o número de exemplo \"2\" pelo número desejado;"
+					},
+					"response": []
+				},
+				{
+					"name": "Corrigir Cadastro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"umOuMaisCamposAbaixo\": \"novosValores\",\r\n  \"nomeAluno\": \"novoValor\",\r\n  \"idadeAluno\": \"novaIdadeEmAlgarismosSemAspas\",\r\n  \"emailAluno\": \"novoEmail@example.com\",\r\n  \"cep\": \"novoCEPemAlgarismosSemAspas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/alunos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"1"
+							]
+						},
+						"description": "Atualiza um cadastro de aluno já existente: informe o número do cadastro a ser alterado e os valores do campo a ser atualizado;"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cursos",
+			"item": [
+				{
+					"name": "Cadastrar Curso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nomeCurso\": \"Java\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cursos/novoCurso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursos",
+								"novoCurso"
+							]
+						},
+						"description": "Cadastra novo curso: informe nome do curso;"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Cursos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response is an array with at least one element\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').and.to.have.lengthOf.at.least(1);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.forEach(function (curso) {\r",
+									"        pm.expect(curso).to.have.property('idCurso');\r",
+									"        pm.expect(curso).to.have.property('nomeCurso');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"idCurso is a non-negative integer\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"    responseData.forEach(function (curso) {\r",
+									"        pm.expect(curso.idCurso).to.be.a('number').and.to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"nomeCurso is a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.forEach(function (curso) {\r",
+									"        pm.expect(curso.nomeCurso).to.be.a('string').and.to.have.lengthOf.at.least(1, \"nomeCurso should not be empty\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cursos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursos"
+							]
+						},
+						"description": "Retorna uma lista completa de todos os cursos cadastrados;"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Curso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeCurso\": \"novoValor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cursos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursos",
+								"1"
+							]
+						},
+						"description": "Atualiza um cadastro de curso já existente: informe o número do cadastro a ser alterado e o novo nome;"
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Curso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cursos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursos",
+								"1"
+							]
+						},
+						"description": "Apaga um cadastro de curso: informe o número do cadastro a ser apagado na URL;"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Curso Específico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cursos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursos",
+								"1"
+							]
+						},
+						"description": "Retorna o registro de um aluno através do seu número de cadastro: informe o número ao final da URL, substituindo o número de exemplo \"1\" pelo número desejado;"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Matriculas",
+			"item": [
+				{
+					"name": "Realizar Matriculas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code should be 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Request method is POST\", function () {\r",
+									"    pm.expect(pm.request.method).to.equal(\"POST\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"alunoMatId\": 3,\r\n  \"cursoMatId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/matriculas/novaMatricula",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas",
+								"novaMatricula"
+							]
+						},
+						"description": "Realiza nova matrícula: informe código do aluno e código do curso;"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Matriculas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response is an array with at least one element\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').and.to.have.lengthOf.at.least(1);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Each element in the response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.forEach(function (element) {\r",
+									"        pm.expect(element.idMatricula).to.exist.and.to.be.a('number');\r",
+									"        pm.expect(element.nomeAluno).to.exist.and.to.be.a('string');\r",
+									"        pm.expect(element.nomeCurso).to.exist.and.to.be.a('string');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"idMatricula is a non-negative integer\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.forEach(function (matricula) {\r",
+									"        pm.expect(matricula.idMatricula).to.be.a('number').and.to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas"
+							]
+						},
+						"description": "Retorna uma lista completa de todas as matriculas realizadas;"
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Matricula",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas",
+								"2"
+							]
+						},
+						"description": "Apaga um registro de matrícula: informe o número da matrícula a ser apagada na URL;"
+					},
+					"response": []
+				},
+				{
+					"name": "Alunos Por Curso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"idMat is a non-negative integer\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    responseData.forEach(function (matricula) {\r",
+									"        pm.expect(matricula.idMat).to.be.a('number').and.to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"idAluno is a non-negative integer\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"\r",
+									"    responseData.forEach(function (item) {\r",
+									"        pm.expect(item.alunoMat.idAluno).to.be.a('number').and.to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas/filtroCurso?cursoMat=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas",
+								"filtroCurso"
+							],
+							"query": [
+								{
+									"key": "cursoMat",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Retorna todas os alunos matriculados em um curso: informe o código do curso no final da URL, substituindo o número \"4\" pelo código desejado;"
+					},
+					"response": []
+				},
+				{
+					"name": "Matriculas do Aluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas/filtro?alunoMatId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas",
+								"filtro"
+							],
+							"query": [
+								{
+									"key": "alunoMatId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Retorna todas as matrículas que um aluno realizou: informe o código do aluno no final da URL, substituindo o número \"1\" pelo código desejado;"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
